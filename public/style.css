@@ -1,0 +1,121 @@
+* {
+    font-family: 'DM Sans', sans-serif;
+}
+
+body {
+    /* width: 100%; */
+    margin: 0;
+    /* background: red; */
+}
+
+.body {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    /* border: 1px solid red; */
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    font-weight: 700;
+    text-align: center;
+}
+
+nav img {
+    margin-top: 20px;
+}
+
+h3 {
+    text-align: center;
+}
+
+.container-metricas {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    /* border: 1px solid red; */
+}
+
+#chart_div {
+    /* width: 100%; */
+    /* border: 1px solid red; */
+    display: flex;
+    justify-content: center;
+}
+
+.datos {
+    /* width: 100%; */
+    border: 2px solid #ffb048;
+    padding: 20px;
+    margin: 10px 10px;
+}
+
+.datos-one {
+    display: flex;
+    justify-content: space-between;
+}
+
+.datos-two {
+    margin-top: 20px;
+}
+
+#gen,
+#vip,
+#no,
+#rgen,
+#rvip {
+    text-align: right;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+#no {
+    font-weight: 700;
+    color: #f95f00;
+}
+
+#si {
+    font-weight: 700;
+    color: #109618;
+}
+
+.gen,
+.vip,
+.no,
+.rgen,
+.rvip {
+    text-align: right;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.no {
+    font-weight: 700;
+    color: #f95f00;
+}
+
+.si {
+    font-weight: 700;
+    color: #109618;
+}
+
+span {
+    font-size: 14px;
+}
+
+hr {
+    border: 1px solid #ffb048;
+}
+
+button {
+    width: 180px;
+    padding: 10px;
+    border-radius: 10px;
+    border: 0;
+    background: red;
+    color: white;
+    margin-bottom: 20px;
+}

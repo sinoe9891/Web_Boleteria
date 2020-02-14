@@ -1,0 +1,215 @@
+<html>
+
+<head>
+    <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <!--Load the AJAX API-->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.0.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.0.2/firebase-auth.js"></script>
+    <script type="text/javascript">
+        var firebaseConfig = {
+            apiKey: "AIzaSyCkSqeaQZm4uGFyewFhX3lHQCRsdpnm8-0",
+            authDomain: "boleteria-a815c.firebaseapp.com",
+            projectId: "boleteria-a815c",
+            databaseURL: "https://boleteria-a815c.firebaseio.com",
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        // Load the Visualization API and the corechart package.
+        function login() {
+            let user = document.getElementById("user").value;
+            let pass = document.getElementById("password").value;
+            console.log(user, pass);
+            if (!((/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i).test(user))) {
+                alert('Favor ingresar un correo válido')
+            } else {
+                if (pass == '') {
+                    alert('Favor llenar el campo contraseña.')
+                } else {
+                    firebase.auth().signInWithEmailAndPassword(user, pass).then(() => {
+                        localStorage.setItem('user', user);
+                        localStorage.setItem('pass', pass);
+                        window.location = "index.html"
+                    }).catch(err => {
+                        if (err.code == 'auth/user-disabled') {
+                            alert('El usuario ha sido deshabilitado.')
+                        } else {
+                            if (err.code == 'auth/user-not-found') {
+                                alert('El usuario no existe o ha sido borrado.')
+                            } else {
+                                if (err.code == 'auth/wrong-password') {
+                                    alert('La contraseña es incorrecta.')
+                                } else {
+                                    alert('Se ha producido un error: ' + err.code)
+                                    console.log(err);
+                                }
+                            }
+                        }
+                    })
+                }
+
+            }
+        }
+    </script>
+    <style>
+        * {
+            font-family: 'Quicksand', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .body {
+            background-position-x: 70%;
+            background-size: cover;
+            background: #01597a;
+            background-repeat: no-repeat;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            line-height: 0;
+        }
+        
+        .container {
+            width: 285px;
+            height: 593px;
+            margin: 0px;
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        
+        .logo {
+            margin-top: 90px;
+            width: 280px;
+            height: 100%;
+            text-align: center;
+        }
+        
+        .logo-kidan {
+            margin-top: 0px;
+            width: 100px;
+        }
+        
+        .txt-conectar {
+            color: #fff;
+            width: 100%;
+            font-size: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        hr {
+            background-color: #fff;
+            width: 16.66%;
+        }
+        
+        p {
+            margin: 0px -40px 0 -40px;
+            font-size: 11px;
+            line-height: 1;
+            color: #fff;
+        }
+        
+        .caja-botones-rrss {
+            width: 100%;
+            margin-bottom: 150px;
+            padding: 0%;
+        }
+        
+        .btn-in-re {
+            margin: 0 20px;
+            display: flex;
+            justify-content: space-around;
+            flex-direction: column;
+        }
+        
+        .usuario {
+            height: 40px;
+            margin: 5px 0;
+            border-radius: 20px;
+            border: 0;
+            padding-left: 20px;
+        }
+        
+        .contraseña {
+            height: 40px;
+            margin: 5px 0;
+            border-radius: 20px;
+            border: 0;
+            padding-left: 20px;
+        }
+        
+        .boton {
+            height: 40px;
+            margin: 5px 0;
+            border-radius: 20px;
+            border: 0;
+            font-size: 14px;
+            background-color: rgba(0, 0, 0, 0.4);
+            color: #fff;
+        }
+        
+        .btn-registrar {
+            margin-left: 1.3%;
+            font-size: 14px;
+            border-radius: 10px;
+            width: 48%;
+            height: 40px;
+            background-color: rgba(0, 0, 0, 0.4);
+            color: #fff;
+        }
+        
+        .btn-registro-redes {
+            font-size: 14px;
+            width: 100%;
+            height: 25px;
+            background-color: rgba(0, 0, 0, 0.4);
+            margin-bottom: 1.042%;
+            padding: 0%;
+            border-radius: 10px;
+        }
+        
+        .btn-dark {
+            border: none;
+        }
+        
+        @media screen and (min-height: 667px) {
+            .container {
+                height: 625px;
+            }
+            .caja-botones-rrss {
+                margin-bottom: 100px;
+            }
+            .logo-kidan {
+                margin-top: 0;
+                width: 100px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="body">
+        <div class="container">
+            <div class="logo">
+                <!-- <img class="logo-kidan" src="/assets/icon/kidan-isotipo-white.svg" alt="LogoXplora"> -->
+                <img class="logo-kidan" src="logo.svg" alt="LogoXplora">
+                <!-- <img class="logo-kidan" src="/assets/icon/kidan-h-white.svg" alt="LogoXplora"> -->
+            </div>
+            <div class="caja-botones-rrss">
+                <div class="btn-in-re">
+                    <input class="usuario" type="email" placeholder="Usuario" id="user">
+                    <input class="contraseña" type="password" placeholder="••••••••" id="password">
+                    <button class="boton" onclick="login()">Iniciar Sesión</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

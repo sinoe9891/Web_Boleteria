@@ -1,0 +1,430 @@
+<html>
+
+<head>
+    <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="stylesheet" href="style.css" type="text/css" media="all">
+    <link href="https://fonts.googleapis.com/css?family=DM+Sans:500,700&display=swap" rel="stylesheet">
+    <!--Load the AJAX API-->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.0.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.0.2/firebase-firestore.js"></script>
+    <script type="text/javascript">
+        //Check Login
+        let user = localStorage.getItem("user");
+        let pass = localStorage.getItem("pass");
+        if (!user || !pass) {
+            window.location = "login.html"
+        }
+
+        var firebaseConfig = {
+            apiKey: "AIzaSyCkSqeaQZm4uGFyewFhX3lHQCRsdpnm8-0",
+            authDomain: "boleteria-a815c.firebaseapp.com",
+            projectId: "boleteria-a815c",
+            databaseURL: "https://boleteria-a815c.firebaseio.com",
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        // Load the Visualization API and the corechart package.
+        google.charts.load('current', {
+            'packages': ['corechart']
+        });
+
+        // Set a callback to run when the Google Visualization API is loaded.
+        google.charts.setOnLoadCallback(drawChart);
+
+        // Callback that creates and populates a data table,
+        // instantiates the pie chart, passes in the data and
+        // draws it.
+        function logout() {
+            localStorage.clear();
+            window.location = "login.html"
+        }
+
+        function drawChart() {
+            let firestore = firebase.firestore();
+            firestore.collection("analitics").doc("feria").onSnapshot(function(doc) {
+                var data = new google.visualization.DataTable();
+                data.addColumn('string', 'Tipo de boleto');
+                data.addColumn('number', 'Total');
+                var chart;
+                console.log("Current data: ", doc.data());
+                if (chart)
+                    chart.clearChart()
+                let temp = doc.data()
+                let rows = [
+                    ['General', 160000 - 5000 - 46205],
+                    ['VIP', 160000 - 155000 - 4968],
+                    ['Sin verificar', 46205 + 4968]
+                ]
+                data.addRows(rows);
+                console.log(temp.impresos + ' impresos')
+                console.log(temp.general + ' general')
+                console.log(temp.vip + ' vip')
+                var options = {
+                    title: 'Uso de boletos total.',
+                    width: "100%",
+                    height: 350
+                };
+
+                chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+                chart.draw(data, options);
+                // document.getElementById("gen").textContent = (temp.impresos - 5000 - temp.general) + ' boletos.';
+                // document.getElementById("vip").textContent = (temp.impresos - 155000 - temp.vip) + ' boletos.';
+                // document.getElementById("no").textContent = (temp.general + temp.vip) + ' boletos.';
+                // document.getElementById("si").textContent = (160000 - (temp.general + temp.vip)) + ' boletos.';
+                // document.getElementById("rgen").textContent = temp.general + ' boletos.';
+                // document.getElementById("rvip").textContent = temp.vip + ' boletos.';
+            });
+            showSecond()
+        }
+
+        function showSecond() {
+            let molino = []
+            let brisas = []
+            let puente = []
+            let molinos, brisa, puentes, relevos
+            let firestore = firebase.firestore();
+            //Molino
+            firestore.collection("eventos").doc("feria").collection("boletos").where("usado", "==", true).where("usuario", "==", "anitalfaro709@gmail.com").get().then(function(snapt) {
+                    molino.push(snapt.docs.length)
+                        // document.getElementById("ana").textContent = snapt.docs.length
+                }).then(function() {
+                    firestore.collection("eventos").doc("feria").collection("boletos").where("usado", "==", true).where("usuario", "==", "maryuri_1993_25@hotmail.com").get().then(function(snapt) {
+                        molino.push(snapt.docs.length)
+                            // document.getElementById("maryuri").textContent = snapt.docs.length
+                    }).then(function() {
+                        firestore.collection("eventos").doc("feria").collection("boletos").where("usado", "==", true).where("usuario", "==", "sandralorenaguzmanpuerto88@gmail.com").get().then(function(snapt) {
+                            molino.push(snapt.docs.length)
+                                // document.getElementById("sandra").textContent = snapt.docs.length
+                        }).then(function() {
+                            molinos = molino[0] + molino[1] + molino[2]
+                                // document.getElementById("molino").textContent = molinos
+                        })
+                    })
+                })
+                //Brisas
+            firestore.collection("eventos").doc("feria").collection("boletos").where("usado", "==", true).where("usuario", "==", "jimysantos23@gmail.com").get().then(function(snapt) {
+                    brisas.push(snapt.docs.length)
+                        // document.getElementById("jimy").textContent = snapt.docs.length
+                }).then(function() {
+                    firestore.collection("eventos").doc("feria").collection("boletos").where("usado", "==", true).where("usuario", "==", "c.sanchez0511@hotmail.com").get().then(function(snapt) {
+                        brisas.push(snapt.docs.length)
+                            // document.getElementById("angie").textContent = snapt.docs.length
+                    }).then(function() {
+                        firestore.collection("eventos").doc("feria").collection("boletos").where("usado", "==", true).where("usuario", "==", "macheboy99@gmail.com").get().then(function(snapt) {
+                            brisas.push(snapt.docs.length)
+                                // document.getElementById("chacon").textContent = snapt.docs.length
+                        }).then(function() {
+                            firestore.collection("eventos").doc("feria").collection("boletos").where("usado", "==", true).where("usuario", "==", "gabyvelasquez1994@hotmail.com").get().then(function(snapt) {
+                                brisas.push(snapt.docs.length)
+                                    // document.getElementById("gaby").textContent = snapt.docs.length
+                            }).then(function() {
+                                firestore.collection("eventos").doc("feria").collection("boletos").where("usado", "==", true).where("usuario", "==", "Marlinguzman03@hotmail.com").get().then(function(snapt) {
+                                    brisas.push(snapt.docs.length)
+                                        // document.getElementById("marlin").textContent = snapt.docs.length
+                                }).then(function() {
+                                    brisa = brisas[0] + brisas[1] + brisas[2] + brisas[3] + brisas[4]
+                                        // document.getElementById("brisas").textContent = brisa
+
+                                    var data1 = new google.visualization.DataTable();
+                                    data1.addColumn('string', 'Entrada');
+                                    data1.addColumn('number', 'Total');
+                                    var chart1;
+                                    //console.log("Current data: ", doc.data());
+                                    if (chart1)
+                                        chart1.clearChart()
+                                        //let temp = doc.data()
+                                    let rows = [
+                                        // ['Molino', molinos],
+                                        // ['Brisas', brisa],
+                                        // ['Puente', puentes],
+                                        // ['Relevos', relevos]
+                                        ['Molino', 29423],
+                                        ['Brisas', 42674],
+                                        ['Puente', 26956],
+                                        ['Relevos', 6394]
+                                    ]
+                                    console.log(rows)
+                                    data1.addRows(rows);
+
+                                    var options = {
+                                        title: 'Uso de boletos por entrada',
+                                        pieHole: 0.4,
+                                        width: "100%",
+                                        height: 350
+                                    };
+
+                                    chart1 = new google.visualization.PieChart(document.getElementById('sec_chart'));
+                                    chart1.draw(data1, options);
+                                    days()
+                                })
+                            })
+                        })
+                    })
+                })
+                //Puente
+            firestore.collection("eventos").doc("feria").collection("boletos").where("usado", "==", true).where("usuario", "==", "fgabrielaherrera@hotmail.com").get().then(function(snapt) {
+                puente.push(snapt.docs.length)
+                    // document.getElementById("fany").textContent = snapt.docs.length
+            }).then(function() {
+                firestore.collection("eventos").doc("feria").collection("boletos").where("usado", "==", true).where("usuario", "==", "melissaperdomo2013@hotmail.com").get().then(function(snapt) {
+                    puente.push(snapt.docs.length)
+                        // document.getElementById("meli").textContent = snapt.docs.length
+                }).then(function() {
+                    puentes = puente[0] + puente[1]
+                        // document.getElementById("puente").textContent = puentes
+                })
+            })
+
+            firestore.collection("eventos").doc("feria").collection("boletos").where("usado", "==", true).where("usuario", "==", "williams_43@hotmail.com").get().then(function(snapt) {
+                relevos = snapt.docs.length
+                    // document.getElementById("wiliam").textContent = snapt.docs.length
+                    // document.getElementById("total-relevo").textContent = snapt.docs.length
+            })
+        }
+
+        function day(inicio, fin, dia) {
+            let firestore = firebase.firestore();
+            return new Promise(function(resolve, reject) {
+                firestore.collection("eventos").doc("feria").collection("boletos").where("usado", "==", true).where("horaUsado", ">=", inicio + 21600).where("horaUsado", "<=", fin + 21600).onSnapshot(function(snapt) {
+                    resolve([dia, snapt.docs.length])
+                })
+            })
+        }
+
+        function days() {
+            let firestore = firebase.firestore();
+            let rows = []
+            rows.push(
+                ['Viernes 21', 3826], ['Sábado 22', 12597], ['Domingo 23', 12369], ['Lunes 24', 3780], ['Martes 25', 3442], ['Miércoles 26', 5265], ['Jueves 27', 8656], ['Viernes 28', 11455], ['Sábado 29', 28690],
+                // ['Miércoles 26', 5265], ['Jueves 27', 8656], ['Viernes 28', 11455], ['Sábado 29', 28690], ['Domingo 30', 18818]
+            )
+            day(1561860000, 1561942800, 'Domingo 30').then(function(row) {
+                rows.push(row)
+            }).then(function() {
+                var data2 = new google.visualization.DataTable();
+                data2.addColumn('string', 'Dia');
+                data2.addColumn('number', 'Total');
+                var chart2;
+                //console.log("Current data: ", doc.data());
+                if (chart2)
+                    chart2.clearChart()
+                    //let temp = doc.data()
+                console.log(rows)
+                data2.addRows(rows);
+                var options = {
+                    title: 'Uso de boletos por día',
+                    width: "100%",
+                    height: 350
+                };
+                chart2 = new google.visualization.ColumnChart(document.getElementById('graph'));
+                chart2.draw(data2, options);
+            })
+
+
+            /*await rows.push(day(1561075200, 1561165200, 'Viernes 21'))
+            await rows.push(day(1561168800, 1561251600, 'Sábado 22'))*/
+
+
+        }
+    </script>
+
+</head>
+
+<body>
+    <div class="body">
+        <header>
+            <nav>
+                <div>
+                    <img src="logo-ccic.svg" alt="">
+                </div>
+                <h2> Analytics de entradas ExpoFeria Juniana 2019</h2>
+            </nav>
+        </header>
+        <div class="container-metricas">
+            <div>
+                <div id="chart_div"></div>
+                <div class="datos">
+                    <div class="datos-one">
+                        <span>General (L.35)</span>
+                        <!-- <span id="gen"></span> -->
+                        <span class="gen" id="">108795 boletos.</span>
+                    </div>
+                    <div class="datos-one">
+                        <span>VIP (L.50)</span>
+                        <!-- <span id="vip"></span> -->
+                        <span class="vip" id="">32 boletos.</span>
+                    </div>
+                    <div>
+                        <hr>
+                    </div>
+                    <div class="datos-one">
+                        <span><b>Total Verficados</b></span>
+                        <!-- <span id="si"></span> -->
+                        <span class="si" id="">108827 boletos.</span>
+                    </div>
+                    <div>
+                        <hr>
+                    </div>
+                    <div class="datos-two">
+                        <div class="datos-one">
+                            <span>General sin Verificar</span>
+                            <!-- <span id="rgen">46205 boletos.</span> -->
+                            <span class="rgen" id="">46205 boletos.</span>
+                        </div>
+                        <div class="datos-one">
+                            <span>VIP sin Verificar</span>
+                            <!-- <span id="rvip"></span> -->
+                            <span class="rvip" id="">4968 boletos.</span>
+                        </div>
+                        <div>
+                            <hr>
+                        </div>
+                        <div class="datos-one">
+                            <span><b>Total Sin Verificar</b></span>
+                            <!-- <span id="no"></span> -->
+                            <span class="no" id="">51173 boletos.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            <div>
+                <div>
+                    <h3> Métricas por tipo de acceso</h3>
+                </div>
+                <div id="sec_chart"></div>
+                <div class="datos">
+                    <div>
+                        <h4 style="color:#3366cc;"> ENTRADA SECTOR MOLINOS</h4>
+                        <div>
+                            <hr>
+                        </div>
+                        <div class="datos-one">
+                            <span>Anita Canan Alfaro</span>
+                            <!-- <span id="ana"></span> -->
+                            <span id="">9268</span>
+                        </div>
+                        <div class="datos-one">
+                            <span>Maryuri Marilyn Martinez Padilla</span>
+                            <!-- <span id="maryuri"></span> -->
+                            <span id="">10241</span>
+                        </div>
+                        <div class="datos-one">
+                            <span>Sandra Lorena Guzman Puerto</span>
+                            <!-- <span id="sandra"></span> -->
+                            <span id="">9914</span>
+                        </div>
+                        <div>
+                            <hr>
+                        </div>
+                        <div class="datos-one">
+                            <span><b>Total</b></span>
+                            <!-- <b><span id="molino"></span></b> -->
+                            <b><span id="">29423</span></b>
+                        </div>
+                    </div>
+                    <div>
+                        <hr>
+                    </div>
+                    <div>
+                        <h4 style="color:#dc3912;"> ENTRADA SECTOR BRISAS</h4>
+                        <div>
+                            <hr>
+                        </div>
+                        <div class="datos-one">
+                            <span>Jimy Estiward Santos Aguilar</span>
+                            <!-- <span id="jimy"></span> -->
+                            <span id="">15634</span>
+                        </div>
+                        <div class="datos-one">
+                            <span>Wilmer Mauricio Chacon Gutierrez</span>
+                            <!-- <span id="chacon"></span> -->
+                            <span id="">9593</span>
+                        </div>
+                        <div class="datos-one">
+                            <span>Angie jorleny Cardona Sánchez</span>
+                            <!-- <span id="angie"></span> -->
+                            <span id="">6710</span>
+                        </div>
+                        <div class="datos-one">
+                            <span>Marlin Yessenia Guzman</span>
+                            <!-- <span id="marlin"></span> -->
+                            <span id="">3370</span>
+                        </div>
+                        <div class="datos-one">
+                            <span>Gabriela María Santos Vasquez</span>
+                            <!-- <span id="gaby"></span> -->
+                            <span id="">7367</span>
+                        </div>
+                        <div>
+                            <hr>
+                        </div>
+                        <div class="datos-one">
+                            <span><b>Total</b></span>
+                            <!-- <b><span id="brisas"></span></b> -->
+                            <b><span id="">42674</span></b>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 style="color:#ff9900;">ENTRADA SECTOR PUENTE</h4>
+                        <div>
+                            <hr>
+                        </div>
+                        <div class="datos-one">
+                            <span>Fany Gabriela Mata Herrera</span>
+                            <!-- <span id="fany"></span> -->
+                            <span id="">13867</span>
+                        </div>
+                        <div class="datos-one">
+                            <span>Melissa Raschell Perdomo Pineda</span>
+                            <!-- <span id="meli"></span> -->
+                            <span id="">13089</span>
+                        </div>
+                        <div>
+                            <hr>
+                        </div>
+                        <div class="datos-one">
+                            <span><b>Total</b></span>
+                            <!-- <b><span id="puente"></span></b> -->
+                            <b><span id="">26956</span></b>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 style="color:#109618;">GENTE EN RELEVOS</h4>
+                        <div>
+                            <hr>
+                        </div>
+                        <div class="datos-one">
+                            <span>Willian Orlando Dubon Sauceda</span>
+                            <!-- <span id="wiliam"></span> -->
+                            <span id="">6394</span>
+                        </div>
+
+                        <div>
+                            <hr>
+                        </div>
+                        <div class="datos-one">
+                            <span><b>Total</b></span>
+                            <!-- <b><span id="total-relevo"></span></b> -->
+                            <b><span id="">6394</span></span></b>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="sec_chart"></div>
+        <div>
+            <h3> Métricas por tipo día</h3>
+        </div>
+        <div id="graph"></div>
+        <div style="text-align: center;">
+            <button onclick="logout()">Cerrar Sesion</button>
+        </div>
+    </div>
+</body>
+
+</html>
