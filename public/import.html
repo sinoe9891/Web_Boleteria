@@ -1,0 +1,94 @@
+<html>
+
+<head>
+    <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="stylesheet" href="style.css" type="text/css" media="all">
+    <link href="https://fonts.googleapis.com/css?family=DM+Sans:500,700&display=swap" rel="stylesheet">
+    <!--Load the AJAX API-->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.0.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.0.2/firebase-firestore.js"></script>
+    <script type="text/javascript">
+        //Check Login
+        let user = localStorage.getItem("user");
+        let pass = localStorage.getItem("pass");
+        if (!user || !pass) {
+            window.location = "login.html"
+        }
+
+        var firebaseConfig = {
+            apiKey: "AIzaSyCkSqeaQZm4uGFyewFhX3lHQCRsdpnm8-0",
+            authDomain: "boleteria-a815c.firebaseapp.com",
+            projectId: "boleteria-a815c",
+            databaseURL: "https://boleteria-a815c.firebaseio.com",
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        // Load the Visualization API and the corechart package.
+        // instantiates the pie chart, passes in the data and
+        // draws it.
+        function logout() {
+            localStorage.clear();
+            window.location = "login.html"
+        }
+        let firestore = firebase.firestore();
+        function Upload() {
+            var fileUpload = document.getElementById("fileUpload");
+            var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.csv|.txt)$/;
+            if (regex.test(fileUpload.value.toLowerCase())) {
+                if (typeof (FileReader) != "undefined") {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        var table = document.createElement("table");
+                        var rows = e.target.result.split("\n");
+                        var fields = rows[0].split(",");                    
+                        for (var i = 1; i < rows.length; i++) {
+                            var cells = rows[i].split(",");
+                            var newCode = {
+                                codigo:cells[0],
+                                impreso:true,
+                                precio:parseFloat(cells[1]),
+                                ubicacion:cells[2],
+                                usado:false
+                            }
+                            console.log(newCode , "Uploaded")
+                            firestore.collection("eventos").doc("feria").collection("boletos").doc(cells[0]).set(newCode)
+                        }
+                    }
+                    reader.readAsText(fileUpload.files[0]);
+                } else {
+                    alert("This browser does not support HTML5.");
+                }
+            } else {
+                alert("Please upload a valid CSV file.");
+            }
+        }
+
+    </script>
+
+</head>
+
+<body>
+    <div class="body">
+        <header>
+            <nav>
+                <div>
+                    <img src="logo-ccic.svg" alt="">
+                </div>
+                <h2> Importar CSV</h2>
+            </nav>
+        </header>
+        <h3>Subir un archivo csv con el siguiente formato: "code,price,name"  incluyendo los encabezados</h3>
+        <div style="display: flex;align-items: center;justify-content: center;">
+            <div style="width: 50%;">
+                <h5>Si un codigo ya existe sera ustituido por el nuevo del archivo</h5>
+                <input type="file" id="fileUpload" />
+                <input type="button" id="upload" value="Upload" onclick="Upload()" />
+                <div id="dvCSV"></div>
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>
